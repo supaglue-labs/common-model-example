@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model SyncState {
+  id                String   @id @default(cuid())
+  type              String
+  providerName      String   @map("provider_name")
+  customerId        String   @map("customer_id")
+  objectType        String   @map("object_type")
+  object            String
+  maxLastModifiedAt DateTime @map("max_last_modified_at")
+
+  @@unique([type, objectType, object, providerName, customerId])
+  @@map("sync_states")
+}
+
+model User {
+  id           String    @id
+  customerId   String    @map("_supaglue_customer_id")
+  providerName String    @map("_supaglue_provider_name")
+  name         String
+  email        String
+  isActive     Boolean   @map("is_active")
+  createdAt    DateTime? @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+
+  @@unique([customerId, id, providerName])
+  @@map("users")
+}
+
+model Account {
+  id                String    @id
+  customerId        String    @map("_supaglue_customer_id")
+  providerName      String    @map("_supaglue_provider_name")
+  name              String
+  description       String?
+  ownerId           String?   @map("owner_id")
+  industry          String?
+  website           String?
+  numberOfEmployees Int?      @map("number_of_employees")
+  addresses         Json?     @map("addresses")
+  phoneNumbers      Json?     @map("phone_numbers")
+  lifecycleStage    String?   @map("lifecycle_stage")
+  lastActivityAt    DateTime? @map("last_activity_at")
+  createdAt         DateTime? @map("created_at")
+  updatedAt         DateTime? @map("updated_at")
+
+  @@unique([customerId, id, providerName])
+  @@map("accounts")
+}
+
+model Contact {
+  id             String    @id
+  customerId     String    @map("_supaglue_customer_id")
+  providerName   String    @map("_supaglue_provider_name")
+  accountId      String?   @map("account_id")
+  ownerId        String?   @map("owner_id")
+  firstName      String?   @map("first_name")
+  lastName       String?   @map("last_name")
+  addresses      Json?     @map("addresses")
+  emailAddresses Json?     @map("email_addresses")
+  phoneNumbers   Json?     @map("phone_numbers")
+  lifecycleStage String?   @map("lifecycle_stage")
+  lastActivityAt DateTime? @map("last_activity_at")
+  createdAt      DateTime? @map("created_at")
+  updatedAt      DateTime? @map("updated_at")
+
+  @@unique([customerId, id, providerName])
+  @@map("contacts")
+}
+
+model Lead {
+  id                 String    @id
+  customerId         String    @map("_supaglue_customer_id")
+  providerName       String    @map("_supaglue_provider_name")
+  firstName          String    @map("first_name")
+  lastName           String    @map("last_name")
+  ownerId            String?   @map("owner_id")
+  title              String?
+  company            String?
+  convertedDate      DateTime? @map("converted_date")
+  leadSource         String?   @map("lead_source")
+  convertedAccountId String?   @map("converted_account_id")
+  convertedContactId String?   @map("converted_contact_id")
+  addresses          Json?     @map("addresses")
+  emailAddresses     Json?     @map("email_addresses")
+  phoneNumbers       Json?     @map("phone_numbers")
+  createdAt          DateTime? @map("created_at")
+  updatedAt          DateTime? @map("updated_at")
+
+  @@unique([customerId, id, providerName])
+  @@map("leads")
+}
+
+model Opportunity {
+  id             String    @id
+  customerId     String    @map("_supaglue_customer_id")
+  providerName   String    @map("_supaglue_provider_name")
+  name           String
+  description    String?
+  ownerId        String?   @map("owner_id")
+  status         String?
+  stage          String?
+  closeDate      DateTime? @map("close_date")
+  accountId      String    @map("account_id")
+  pipeline       String?
+  amount         BigInt?
+  lastActivityAt DateTime? @map("last_activity_at")
+  createdAt      DateTime? @map("created_at")
+  updatedAt      DateTime? @map("updated_at")
+
+  @@unique([customerId, id, providerName])
+  @@map("opportunities")
+}

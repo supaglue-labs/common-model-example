@@ -4,6 +4,10 @@
     "build": {
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "lint": {}
+    "lint": {},
+    "generate": {
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": ["prisma/.prisma/client"]
+    }
   }
 }
