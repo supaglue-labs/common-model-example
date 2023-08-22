@@ -21,7 +21,7 @@ type ObjectSyncComplete = {
 };
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ name: "Common Model Dogfooding" });
+const inngest = new Inngest({ name: "Common Model Dogfooding" });
 
 async function getHighWatermark(data: ObjectSyncComplete) {
   {
